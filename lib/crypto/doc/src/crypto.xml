@@ -44,6 +44,9 @@
         <p>sha: Secure Hash Standard (FIPS 180-2)</p>
       </item>
       <item>
+        <p>ripemd160: RACE Integrity Primitives Evaluation Message Digest</p>
+      </item>
+      <item>
         <p>hmac: Keyed-Hashing for Message Authentication (RFC 2104)</p>
       </item>
       <item>
@@ -254,6 +257,52 @@ Mpint() = <![CDATA[<<ByteLen:32/integer-big, Bytes:ByteLen/binary>>]]>
         <p>Finishes the update of an SHA <c>Context</c> and returns
           the computed <c>SHA</c> message digest.</p>
       </desc>
+    </func>
+    <func>
+      <name>ripemd160(Data) -> Digest</name>
+      <fsummary>Compute a <c>RIPEMD-160</c>message digest from <c>Data</c></fsummary>
+      <type>
+        <v>Data = iolist() | binary()</v>
+        <v>Digest = binary()</v>
+      </type>
+      <desc>
+        <p>Computes a <c>RIPEMD-160</c> message digest from <c>Data</c>, where
+          the length of the digest is 160 bits (20 bytes).</p>
+      </desc>
+    </func>
+    <func>
+      <name>ripemd160_init() -> Context</name>
+      <fsummary>Create a RIPEMD-160 context</fsummary>
+      <type>
+        <v>Context = binary()</v>
+      </type>
+      <desc>
+        <p>Creates a RIPEMD-160 context, to be used in subsequent calls to
+          <c>ripemd160_update/2</c>.</p>
+      </desc>
+    </func>
+    <func>
+      <name>ripemd160_update(Context, Data) -> NewContext</name>
+      <fsummary>Update a RIPEMD-160 context</fsummary>
+      <type>
+        <v>Data = iolist() | binary()</v>
+        <v>Context = NewContext = binary()</v>
+      </type>
+      <desc>
+        <p>Updates a RIPEMD-160 <c>Context</c> with <c>Data</c>, and returns
+          a <c>NewContext</c>.</p>
+      </desc>
+    </func>
+    <func>
+       <name>ripemd160_final(Context) -> Digest</name>
+       <fsummary>Finish the update of a RIPMD-160 context</fsummary>
+       <type>
+         <v>Context = Digest = binary()</v>
+       </type>
+       <desc>
+         <p>Finishes the update of a RIPEMD-160 <c>Context</c> and returns
+            the computed <c>RIPEMD-160</c> message digest.</p>
+       </desc>
     </func>
     <func>
       <name>md5_mac(Key, Data) -> Mac</name>

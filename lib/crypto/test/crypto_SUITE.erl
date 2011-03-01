@@ -35,6 +35,8 @@
 	 sha256_update/1,
 	 sha512/1,
 	 sha512_update/1,
+	 ripemd160/1,
+	 ripemd160_update/1,
 	 md5_mac/1,
 	 md5_mac_io/1,
 	 des_cbc/1,
@@ -67,6 +69,7 @@ all() ->
     [link_test, md5, md5_update, md4, md4_update, md5_mac,
      md5_mac_io, sha, sha_update, 
      %% sha256, sha256_update, sha512,sha512_update,
+     ripemd160, ripemd160_update,
      des_cbc, aes_cfb, aes_cbc,
      aes_cbc_iter, aes_ctr, des_cbc_iter, des_ecb, rand_uniform_test,
      rsa_verify_test, dsa_verify_test, rsa_sign_test,
@@ -364,6 +367,38 @@ sha512_update(Config) when is_list(Config) ->
 
 %%
 %%
+ripemd160(doc) ->
+    ["Generate RIPEMD-160 message digests and check the result. Examples are "
+     "from the authors webpage: http://homes.esat.kuleuven.be/~bosselae/ripemd160.html#Outline"];
+ripemd160(suite) ->    [];
+ripemd160(Config) when is_list(Config) ->
+    ?line m(crypto:ripemd160("abc"),
+             hexstr2bin("8eb208f7e05d987a9b044a8e98c6b087f15a0bfc")),
+    ?line m(crypto:ripemd160("abcdbcdecdefdefgefghfghighijhijkijkljklmklm"
+                             "nlmnomnopnopq"),
+             hexstr2bin("12a053384a9c0c88e405a06c27dcf49ada62eb2b")).
+
+%%
+%%
+ripemd160_update(doc) ->
+    ["Generate RIPEMD160 message digests by using ripemd160_init, ripemd160_update, and"
+     "ripemd160_final, and check the result. "
+     "Examples from http://homes.esat.kuleuven.be/~bosselae/ripemd160.html#Outline"];
+ripemd160_update(suite) ->    [];
+ripemd160_update(Config) when is_list(Config) ->
+    ?line Ctx = crypto:ripemd160_init(),
+    ?line Ctx1 = crypto:ripemd160_update(Ctx, "1234567890"),
+    ?line Ctx2 = crypto:ripemd160_update(Ctx1, "1234567890"),
+    ?line Ctx3 = crypto:ripemd160_update(Ctx2, "1234567890"),
+    ?line Ctx4 = crypto:ripemd160_update(Ctx3, "1234567890"),
+    ?line Ctx5 = crypto:ripemd160_update(Ctx4, "1234567890"),
+    ?line Ctx6 = crypto:ripemd160_update(Ctx5, "1234567890"),
+    ?line Ctx7 = crypto:ripemd160_update(Ctx6, "1234567890"),
+    ?line Ctx8 = crypto:ripemd160_update(Ctx7, "1234567890"),
+    ?line m(crypto:ripemd160_final(Ctx8),
+            hexstr2bin("9b752e45573d4b39f4dbd3323cab82bf63326bfb")).
+%
+%
 md5_mac(doc) ->
     ["Generate some HMACs, using MD5, and check the result. Examples are "
      "from RFC-2104."];
